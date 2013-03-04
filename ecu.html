@@ -1,0 +1,70 @@
+
+<html>
+<head>
+</head>
+<body>
+
+
+<div style="margin-bottom: 30px">
+<form class="euc-change ux-form-top" id="euc-change" method="get">
+	<p>
+	<label><span>Please enter your benefit rate in the box below</span> <span class="ux-inline left" style="margin-top: 4px">$</span> <input class="validate[required,custom[integer],min[64],max[405]]" id="euc" name="euc" type="text"> </label><input class="button no-icon" id="euc-button" name="euc-button" type="button" value="Calculate EUC"> 
+	</p>
+</form>
+<p class="ux-msg" id="ecu-results" style="display: none">
+Your new EUC weekly benefits is: <strong>$<span id="euc-total"></span></strong> 
+</p>
+</div>
+
+
+
+<script>
+		function eucCalc() {
+
+			// Variables
+			var reducPercentage = .107,
+				minEUC = 64,
+				maxEUC = 405,
+				resultsBox = document.getElementById('ecu-results'),
+				ecuInput = document.getElementById('euc').value,
+				newEUC;
+
+			if (isNaN(parseInt(ecuInput))) {
+
+				// Blank our the results
+				newEUC = "";
+
+				// Hide Result Box on invalid values
+				resultsBox.style.display = "none";
+
+			} else {
+
+				// Turn the textbox value into a number
+				ecuInput = parseInt(ecuInput);
+
+				resultsBox.style.display = (ecuInput < 64 || ecuInput > 405) ? "none" : "block" ;
+
+				// Let validation framework deal with the min/max handling.
+				newEUC = (ecuInput - (ecuInput * reducPercentage));
+
+				// Check to make sure the new EUC is larger then the minimum payout
+
+			}
+
+			// Enter the number onto the page
+			document.getElementById('euc-total').innerHTML = Math.round(newEUC);
+
+		}
+
+$(document).ready(function(){
+
+// Select the input button and bind function to it
+document.getElementById('euc-button').onclick = eucCalc;
+
+
+//$("#euc-change").validationEngine();
+
+});
+</script>
+</body>
+</html>
