@@ -6,61 +6,76 @@
 
 
 <div style="margin-bottom: 30px">
+<h3>Benefit Rate Calculator</h3>
+<p>
+If you are receiving EUC, this calculator can help you estimate how your benefits will change as of the week ending April 7, 2013. Please enter your current weekly benefit amount (before taxes or other deductions) in the box below and then click on the &ldquo;Calculate EUC&rdquo; button. The resulting number will be your new weekly benefit rate before any deductions. Please note that you must enter a benefit rate between $64 and $405 or you will receive an error message. 
+</p>
 <form class="euc-change ux-form-top" id="euc-change" method="get">
 	<p>
-	<label><span>Please enter your benefit rate in the box below</span> <span class="ux-inline left" style="margin-top: 4px">$</span> <input class="validate[required,custom[integer],min[64],max[405]]" id="euc" name="euc" type="text"> </label><input class="button no-icon" id="euc-button" name="euc-button" type="button" value="Calculate EUC"> 
+	<label><span>Please enter your benefit rate in the box below</span> <span class="ux-inline left" style="margin-top: 4px">$</span> <input class="validate[required,custom[integer]]" id="euc" name="euc" type="text"> </label><input class="button no-icon" id="euc-button" name="euc-button" type="button" value="Calculate EUC"> 
 	</p>
 </form>
 <p class="ux-msg" id="ecu-results" style="display: none">
 Your new EUC weekly benefits is: <strong>$<span id="euc-total"></span></strong> 
 </p>
+<p class="ux-msg" id="ecu-error" style="display: none">
+Please enter a valid benefit rate between $64 and $405.
+</p>
 </div>
 
 
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
 
 <script>
-		function eucCalc() {
+	function eucCalc(e) {
 
-			// Variables
-			var reducPercentage = .107,
-				minEUC = 64,
-				maxEUC = 405,
-				resultsBox = document.getElementById('ecu-results'),
-				ecuInput = document.getElementById('euc').value,
-				newEUC;
+		var reducPercentage = .107,
+			minEUC = 64,
+			maxEUC = 405,
+			ecuError = document.getElementById('ecu-error'),
+			resultsBox = document.getElementById('ecu-results'),
+			ecuTotal = document.getElementById('euc-total'),
+			ecuInput = document.getElementById('euc').value,
+			newEUC;
+		// Variables
+		
 
-			if (isNaN(parseInt(ecuInput))) {
+		if (isNaN(parseInt(ecuInput))) {
 
-				// Blank our the results
-				newEUC = "";
+			// Blank our the results
+			newEUC = "";
 
-				// Hide Result Box on invalid values
-				resultsBox.style.display = "none";
+			// Hide Result Box on invalid values
+			resultsBox.style.display = "none";
+			ecuError.style.display="block";
+		} else {
 
-			} else {
-
-				// Turn the textbox value into a number
-				ecuInput = parseInt(ecuInput);
-
-				resultsBox.style.display = (ecuInput < 64 || ecuInput > 405) ? "none" : "block" ;
-
-				// Let validation framework deal with the min/max handling.
+			// Turn the textbox value into a number
+			ecuInput = parseInt(ecuInput);
+			if (ecuInput > 64 && ecuInput < 405) {
+				//calculate
 				newEUC = (ecuInput - (ecuInput * reducPercentage));
-
-				// Check to make sure the new EUC is larger then the minimum payout
-
+				
+				// Enter the number onto the page
+				ecuTotal.innerHTML = Math.floor(newEUC);
+				
+				//display results
+				ecuError.style.display="none";
+				resultsBox.style.display="block";
+			} else {
+				//display error
+				resultsBox.style.display="none";
+				ecuError.style.display="block";
 			}
-
-			// Enter the number onto the page
-			document.getElementById('euc-total').innerHTML = Math.floor(newEUC);
-
 		}
+	}
 
 $(document).ready(function(){
 
 // Select the input button and bind function to it
 document.getElementById('euc-button').onclick = eucCalc;
-
+//document.getElementById('euc-change').onsubmit = eucCalc;
 
 //$("#euc-change").validationEngine();
 
