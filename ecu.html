@@ -12,11 +12,11 @@ If you are receiving EUC, this calculator can help you estimate how your benefit
 </p>
 <form class="euc-change ux-form-top" id="euc-change" method="get">
 	<p>
-	<label><span>Please enter your benefit rate in the box below</span> <span class="ux-inline left" style="margin-top: 4px">$</span> <input class="validate[required,custom[integer]]" id="euc" name="euc" type="text"> </label><input class="button no-icon" id="euc-button" name="euc-button" type="button" value="Calculate EUC"> 
+	<label><span>Please enter your benefit rate in the box below:</span> <span class="ux-inline left" style="margin-top: 4px">$</span> <input class="validate[required,custom[integer]]" id="euc" name="euc" type="text"> </label><input class="button no-icon" id="euc-button" name="euc-button" type="button" value="Calculate EUC"> 
 	</p>
 </form>
 <p class="ux-msg" id="ecu-results" style="display: none">
-Your new EUC weekly benefits is: <strong>$<span id="euc-total"></span></strong> 
+New weekly benefit rate will be: <strong>$<span id="euc-total"></span></strong> 
 </p>
 <p class="ux-msg" id="ecu-error" style="display: none">
 Please enter a valid benefit rate between $64 and $405.
@@ -53,7 +53,7 @@ Please enter a valid benefit rate between $64 and $405.
 
 			// Turn the textbox value into a number
 			ecuInput = parseInt(ecuInput);
-			if (ecuInput > 64 && ecuInput < 405) {
+			if (ecuInput >= 64 && ecuInput <= 405) {
 				//calculate
 				newEUC = (ecuInput - (ecuInput * reducPercentage));
 				
